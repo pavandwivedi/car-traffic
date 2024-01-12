@@ -10,7 +10,7 @@ export async function authenticLoginController(req,res){
             return res.send(error(422,"insufficient data"));
         }
 
-        const existingUser =  await userModel.findOne({email});
+        const existingUser =  await userModel.findOne({deviceID});
 
         // if user not present create new user
         if(!existingUser){
@@ -20,7 +20,11 @@ export async function authenticLoginController(req,res){
             return res.send(success(200,{accessToken}));
         }
 
-        // if user already present
+        //  if user already present
+        existingUser.name = name;
+        existingUser.email = email;
+        existingUser.profileURL = profileURL;
+        await existingUser.save();
         const accessToken = generateAccessToken({...existingUser});
         return res.send(success(200,{accessToken}));
        
@@ -28,25 +32,6 @@ export async function authenticLoginController(req,res){
         return res.send(error(500,err.message));
     }
 }
-
-// export async function loginController(req,res){
-//     try {
-//         const {email }= req.body;
-
-//         if(!email){
-//             return res.send(error(400,"email required"));
-//         }
-//         const user = await userModel.findOne({email});
-//         if(!user){
-//             return res.send(error(404,"user not found"));
-//         }
-//         const accessToken = generateAccessToken({...user});
-//         return res.send(success(200,{accessToken}));
-//     } catch (err) {
-//         return res.send(error(500,err.message));
-//     }
-// }
-
 
 export async function getUserController(req,res){
     try {

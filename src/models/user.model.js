@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const userSchema = mongoose.Schema({
     deviceID:{
         type:String,
+        required:true,
+        unique:true
     },
     fcm_token:{
         type:String

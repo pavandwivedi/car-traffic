@@ -18,14 +18,13 @@ export async function checkUserLogin(req,res,next){
 }
 
 
-
-export async function signupMiddleware(req,res,next){
-    try {
-        if(Object.keys(req.body).length==0){
-            return res.status(400).send(error(400,"body is required"));
-        }
-        next();
-    } catch (err){
-        return res.send(error(500,err.message));
-    }
-}
+// export async function signupMiddleware(req,res,next){
+//     try{
+//         if(Object.keys(req.body).length==0){
+//             return res.status(400).send(error(400,"body is required"));
+//         }
+//         next();
+//     }catch (err){
+//         return res.send(error(500,err.message));
+//     }
+// }

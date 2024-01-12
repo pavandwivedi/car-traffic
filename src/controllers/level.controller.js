@@ -9,6 +9,10 @@ export async function postLevelController(req, res) {
       return res.send(error(400, "missing fields"));
     }
     const user = req._id;
+    const checkUser = await userModel.findById(user);
+    if(!checkUser){
+      return res.send(error(404,"user no more exist"));
+    }
     const existingLevel = await levelModel.findOne({$and:[{user},{level}]});
 
     if(existingLevel){
@@ -49,7 +53,7 @@ export async function getLevelController(req, res) {
 }
 
 export async function updateLevelController(req,res){
-    try {
+    try{
         const levelNo = req.params.levelNo;
         const user = req._id;
         const {score , star} = req.body;
@@ -59,6 +63,7 @@ export async function updateLevelController(req,res){
         if(!levelInfo){
             return res.send(error(404,"level info does not exist"));
         }
+
         if(levelInfo["score"]<score){
             levelInfo["score"]=score;
         }
