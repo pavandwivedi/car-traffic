@@ -1,30 +1,19 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema({
-    deviceID:{
+const commonSchema = mongoose.Schema({
+   
+    referralCode:{
         type:String,
-        required:true,
-        unique:true
+     
     },
-    fcm_token:{
-        type:String
-    },
-    name:{
-        type:String,
-        // required:true
-    },
-    email:{
-        type:String,
-        // required:true,
-        // unique:true
-    },
-    profileURL:{
-        type:String,
-        default:null
-    },
-    coins:{
+  
+   coins:{
         type:Number,
         default:0
+    },
+    Balls:{
+        type:Number,
+        default:5
     },
     highestScore:{
         type:Number,
@@ -46,10 +35,10 @@ const userSchema = mongoose.Schema({
         type: Number,
         default:0
     },
-    achivements:[
+    achievements:[
         {
             type:mongoose.Schema.Types.ObjectId,
-            ref:"achivement"
+            ref:"achievement"
          
         }
     ],
@@ -59,8 +48,29 @@ const userSchema = mongoose.Schema({
             ref:'level'
         }
     ]
+},{timestamps:true}
+)
+const guestSchema = new mongoose.Schema({
+    deviceID:{
+        type:String,
+        unique:true,
+        required:true
+    }
+})
+const authSchema = new mongoose.Schema({
+    name:{
+        type:String,
+    },
+    email:{
+        type:String,
+        unique:true,
+        required:true
+        
+    }
 })
 
 
-const userModel = mongoose.model('user',userSchema);
-export default userModel;
+export const userModel = mongoose.model('user', commonSchema);
+
+export  const guestModel = userModel.discriminator('guestPlayer', guestSchema);
+export const authModel = userModel.discriminator('authPlayer', authSchema);

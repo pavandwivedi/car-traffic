@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import {error,success} from "../utills/responseWrapper.utill.js";
 import { generateAccessToken } from '../services/generateAccessToken.service.js';
 import adminModel from '../models/admin.model.js';
-import userModel from '../models/user.model.js';
+import  {userModel}  from '../models/user.model.js';
 
 export async function signupAdminController(req,res){
     try{

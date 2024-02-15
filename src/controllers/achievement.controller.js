@@ -1,5 +1,5 @@
 import achievementModel from "../models/achievement.model.js";
-import userModel from "../models/user.model.js";
+import {userModel} from "../models/user.model.js";
 import { error, success } from "../utills/responseWrapper.utill.js";
 
 

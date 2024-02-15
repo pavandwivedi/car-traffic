@@ -1,5 +1,5 @@
 import levelModel from "../models/level.model.js";
-import userModel from "../models/user.model.js";
+import {userModel} from "../models/user.model.js";
 import { error, success } from "../utills/responseWrapper.utill.js";
 
 export async function postLevelController(req, res) {
