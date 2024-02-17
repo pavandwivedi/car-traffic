@@ -3,45 +3,8 @@ import { authModel } from "../models/user.model.js";
 import {userModel} from "../models/user.model.js";
 import { generateAccessToken } from "../services/generateAccessToken.service.js";
 import { error, success } from "../utills/responseWrapper.utill.js";
-
-
-export async function authenticLoginController(req,res){
-    try {
-       
-    
-        const {deviceID,name,email,profileURL} = req.body;
-        if(!name || !email ||!deviceID){
-            return res.send(error(422,"insufficient data"));
-        }
-  
-  
-        const existingUser =  await authModel.findOne({email});
-    
-        const referralCode =  generateUniqueReferralCode();
-        console.log(referralCode);
-      
-        if(!existingUser){
-         
-            const newUser = new authModel({deviceID,name,email,profileURL,referralCode});
-             const createUser = await newUser.save();
-            const accessToken = generateAccessToken({...createUser});
-            return res.send(success(200, { accessToken, isNewUser: true }));
-        }
-  
-        //  if user already present
-        existingUser.name = name;
-        existingUser.email = email;
-        existingUser.profileURL = profileURL;
-        await existingUser.save();
-        const accessToken = generateAccessToken({...existingUser});
-        return res.send(success(200, { accessToken, isNewUser: false }));
-       
-    }catch (err){
-        return res.send(error(500,err.message));
-    }
-  }
-  
-  export async function guestLoginController(req, res) {
+import {generateUniqueReferralCode} from "../services/generateReferalCode.js"
+export async function guestLoginController(req, res) {
     try {
         const { deviceID } = req.body;
         console.log(deviceID);
@@ -69,6 +32,56 @@ export async function authenticLoginController(req,res){
         return res.send(error(500, err.message));
     }
   }
+  export async function authenticLoginController(req, res) {
+    try {
+        const { email, deviceID ,name} = req.body;
+        if (!email || !deviceID || !name) {
+            return res.send(error(422, "insufficient data"));
+        }
+    
+        // Find existing user with the same email
+        const guestUser = await guestModel.findOne({ deviceID });
+        
+        const existingUser = await authModel.findOne({ email });
+        
+        if (!existingUser) {
+            
+            // Generate referral code only for new users
+            const referralCode = generateUniqueReferralCode();
+            const newUser = new authModel({ email,name, referralCode });
+
+            // Transfer guest user data to authenticated user
+            if (guestUser) {
+                newUser.Balls = guestUser.Balls; // Assuming name is a field you want to transfer
+                newUser.coins = guestUser.coins;
+                newUser.powerups1 = guestUser.powerups1;
+                newUser.powerups2 = guestUser.powerups2;
+                newUser.powerups3 = guestUser.powerups3;
+                newUser.levels = guestUser.levels;
+                newUser.achievements = guestUser.achievements;
+                 
+            }
+
+            await newUser.save();
+
+            // Delete guest user
+            if (guestUser) {
+                await guestModel.deleteOne({ _id: guestUser._id });
+            }
+
+            const accessToken = generateAccessToken({ ...newUser });
+            return res.send(success(200, { accessToken, isNewUser: true }));
+        } 
+
+        const accessToken = generateAccessToken({ ...existingUser });
+        return res.send(success(200, { accessToken, isNewUser: false }));
+
+    } catch (err) {
+        return res.send(error(500, err.message));
+    }
+}
+
+  
     export async function referAndEarnController(req,res){
   
           const currUser = req._id;
