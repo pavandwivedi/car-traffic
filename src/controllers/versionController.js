@@ -22,7 +22,7 @@ export async function insertVersionController(req, res) {
     }
 }
 
-
+// get version of car traffic game
 export async function getVersionController(req,res){
     try {
         const existingVersion = await  versionModel.find();
