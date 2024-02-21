@@ -52,7 +52,7 @@ export async function guestLoginController(req, res) {
 
             // Transfer guest user data to authenticated user
             if (guestUser) {
-                newUser.Balls = guestUser.Balls; // Assuming name is a field you want to transfer
+                newUser.movecount = guestUser.movecount; // Assuming name is a field you want to transfer
                 newUser.coins = guestUser.coins;
                 newUser.powerups1 = guestUser.powerups1;
                 newUser.powerups2 = guestUser.powerups2;
@@ -120,3 +120,19 @@ export async function getUserController(req,res){
     }
 } 
 
+export async function updateCoinController(req,res){
+    const id =req._id;
+    const Coins = req.body.Coins;
+    try {
+        const user =await userModel.findById(id);
+        if(!user){
+            return res.send(error(404,"user not found"));
+        }
+        user.coins +=Coins;
+        await user.save();
+        return res.send(success(200,"coins updated successfully"));
+
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}

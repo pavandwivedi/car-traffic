@@ -11,7 +11,7 @@ const commonSchema = mongoose.Schema({
         type:Number,
         default:0
     },
-    Balls:{
+    movecount:{
         type:Number,
         default:5
     },
