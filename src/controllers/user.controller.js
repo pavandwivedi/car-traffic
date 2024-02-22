@@ -136,3 +136,65 @@ export async function updateCoinController(req,res){
         return res.send(error(500,err.message));
     }
 }
+
+export async function decreaseCoinsController(req,res){
+    const id =req._id;
+    const Coins = req.body.Coins;
+    try {
+        const user =await userModel.findById(id);
+        if(!user){
+            return res.send(error(404,"user not found"));
+        }
+        user.coins -=Coins;
+        await user.save();
+        return res.send(success(200,"coins updated successfully"));
+
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}
+export async function updateVehiclePowerController(req,res){
+    const id =req._id;
+    const vehiclePower = req.body.vehiclePower;
+    try {
+        const user =await userModel.findById(id);
+        if(!user){
+            return res.send(error(404,"user not found"));
+        }
+        user.vehiclePower +=vehiclePower;
+        await user.save();
+        return res.send(success(200,"vehicle Power  updated successfully"));
+
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}
+
+export async function decreaseVehiclePowerController(req,res){
+    const id =req._id;
+    const vehiclePower = req.body.vehiclePower;
+    try {
+        const user =await userModel.findById(id);
+        if(!user){
+            return res.send(error(404,"user not found"));
+        }
+        user.vehiclePower -=vehiclePower;
+        await user.save();
+        return res.send(success(200,"vehicle Power  updated successfully"));
+
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}
+
+
+export async function getUnlockLevels(req,res){
+    try {
+        const id = req._id;
+        const user = await userModel.findById(id);
+        const unlockLevelcount = user?.levels?.length;
+        return res.send(success(200,{unlockLevelcount}));
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}

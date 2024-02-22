@@ -23,18 +23,11 @@ const commonSchema = mongoose.Schema({
         type: Number,
         default:0
     },
-    powerups1:{
+    vehiclePower:{
         type: Number,
         default:0
     },
-    powerups2:{
-        type: Number,
-        default:0
-    },
-    powerups3:{
-        type: Number,
-        default:0
-    },
+    
     achievements:[
         {
             type:mongoose.Schema.Types.ObjectId,
@@ -42,6 +35,7 @@ const commonSchema = mongoose.Schema({
          
         }
     ],
+  
     levels:[
         {
             type:mongoose.Schema.Types.ObjectId,
