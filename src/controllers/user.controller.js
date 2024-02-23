@@ -105,14 +105,16 @@ export async function facebookLoginController(req, res) {
             });
             
 
+           
             // Transfer guest user data to authenticated user
             if (guestUser) {
-                newUser.life = guestUser.life; // Assuming name is a field you want to transfer
+                newUser.movecount = guestUser.movecount; // Assuming name is a field you want to transfer
                 newUser.coins = guestUser.coins;
-                newUser.extraball = guestUser.extraball;
-                newUser.fireball = guestUser.fireball;
-                newUser.colorball = guestUser.colorball;
+                newUser.powerups1 = guestUser.powerups1;
+                newUser.powerups2 = guestUser.powerups2;
+                newUser.powerups3 = guestUser.powerups3;
                 newUser.levels = guestUser.levels;
+                newUser.achievements = guestUser.achievements;
                  
             }
 
