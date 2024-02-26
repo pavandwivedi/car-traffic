@@ -160,6 +160,7 @@ export async function facebookLoginController(req, res) {
                   return res.send(error(404,"referred user not found"));
               }
               refferer.coins+=20;
+              referrer.isReferred = true;
               await refferer.save();
               reffered.coins+=10;
               await reffered.save();
@@ -168,6 +169,17 @@ export async function facebookLoginController(req, res) {
           } catch (err) {
               return res.send(error(500,err.message));
           }
+    }
+    export async function updateUserController (req,res){
+        try {
+            const userID = req._id;
+            const user = await userModel.findById(userID);
+            user.isReferred = false;
+            await user.save();
+            return res.send(success(200,"user updated successfully"))
+        } catch (err) {
+            return res.send(error(500,err.message));
+        }
     }
 export async function getUserController(req,res){
     try {

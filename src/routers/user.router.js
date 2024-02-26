@@ -1,5 +1,5 @@
 import express from 'express';
-import { authenticLoginController, decreaseCoinsController, decreaseVehiclePowerController, facebookLoginController, getUnlockLevels, getUserController, guestLoginController, referAndEarnController, updateCoinController, updateVehiclePowerController } from '../controllers/user.controller.js';
+import { authenticLoginController, decreaseCoinsController, decreaseVehiclePowerController, facebookLoginController, getUnlockLevels, getUserController, guestLoginController, referAndEarnController, updateCoinController, updateUserController, updateVehiclePowerController } from '../controllers/user.controller.js';
 import { checkUserLogin } from '../middlewares/user.middleware.js';
 
 const userRouter = express.Router();
@@ -14,4 +14,5 @@ userRouter.post('/decreaseCoins',checkUserLogin,decreaseCoinsController);
 userRouter.post('/updateVehiclePower',checkUserLogin,updateVehiclePowerController);
 userRouter.post('/decreaseVehiclePower',checkUserLogin,decreaseVehiclePowerController);
 userRouter.get("/unlockLevelCount",checkUserLogin,getUnlockLevels);
+userRouter.put('updateUser',checkUserLogin,updateUserController);
 export default userRouter;
