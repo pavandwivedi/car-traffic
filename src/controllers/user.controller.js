@@ -5,6 +5,7 @@ import {userModel} from "../models/user.model.js";
 import { generateAccessToken } from "../services/generateAccessToken.service.js";
 import { error, success } from "../utills/responseWrapper.utill.js";
 import {generateUniqueReferralCode} from "../services/generateReferalCode.js"
+
 export async function guestLoginController(req, res) {
     try {
         const { deviceID } = req.body;
@@ -142,8 +143,6 @@ export async function facebookLoginController(req, res) {
         return res.send(error(500, err.message));
     }
 }
-
-  
     export async function referAndEarnController(req,res){
   
           const currUser = req._id;
@@ -268,6 +267,22 @@ export async function getUnlockLevels(req,res){
         const user = await userModel.findById(id);
         const unlockLevelcount = user?.levels?.length;
         return res.send(success(200,{unlockLevelcount}));
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}
+
+
+
+export async function addMovesController(req,res){
+    try {
+        console.log("add moves");
+        const {moves} = req.body;
+        const id = req._id;
+        const user = await userModel.findById(id);
+        user.movecount+=moves;
+        await user.save();
+        return res.send(success(200,`${moves} moves added successfully`));
     } catch (err) {
         return res.send(error(500,err.message));
     }
