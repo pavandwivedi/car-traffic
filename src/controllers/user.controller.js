@@ -196,6 +196,9 @@ export async function getUserController(req,res){
 export async function updateCoinController(req,res){
     const id =req._id;
     const Coins = req.body.Coins;
+    if (Coins<0){
+        return res.send(error(400,"coins cannot be negative"));
+    }
     try {
         const user =await userModel.findById(id);
         if(!user){
@@ -213,12 +216,18 @@ export async function updateCoinController(req,res){
 export async function decreaseCoinsController(req,res){
     const id =req._id;
     const Coins = req.body.Coins;
+    if (Coins<0){
+        return res.send(error(400,"coins cannot be negative"));
+    }
     try {
         const user =await userModel.findById(id);
         if(!user){
             return res.send(error(404,"user not found"));
         }
         user.coins -=Coins;
+        if (user.coins<0){
+            return res.send(error(400,"coins cannot be negative"));
+        }
         await user.save();
         return res.send(success(200,"coins updated successfully"));
 
@@ -252,6 +261,9 @@ export async function decreaseVehiclePowerController(req,res){
             return res.send(error(404,"user not found"));
         }
         user.vehiclePower -=vehiclePower;
+        if(user.vehiclePower<0){
+            return res.send(error(400,"vehicle power cannot be negative"));
+        }
         await user.save();
         return res.send(success(200,"vehicle Power  updated successfully"));
 
