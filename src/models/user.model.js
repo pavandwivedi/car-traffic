@@ -6,6 +6,10 @@ const commonSchema = mongoose.Schema({
         type:String,
      
     },
+    INR:{
+        type:Number,
+        default:0
+    },
     isReferred:{
         type:Boolean,
         default:false
