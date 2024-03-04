@@ -76,10 +76,7 @@ const facebookSchema = new mongoose.Schema({
         unique:true
        
     },
-    phoneNo:{
-        type:String,
-        unique:true
-    }
+   
 })
 
 export const userModel = mongoose.model('user', commonSchema);

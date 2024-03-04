@@ -84,8 +84,8 @@ export async function guestLoginController(req, res) {
 }
 export async function facebookLoginController(req, res) {
     try {
-        const { facebookID, deviceID ,phoneNo} = req.body;
-        if (!facebookID && !phoneNo || !deviceID ) {
+        const { facebookID, deviceID } = req.body;
+        if (!facebookID &&  !deviceID ) {
             return res.send(error(422, "insufficient data"));
         }
     
@@ -96,9 +96,7 @@ export async function facebookLoginController(req, res) {
         if(facebookID){
              existingUser = await facebookModel.findOne({ facebookID });
         }
-        else{
-            existingUser = await facebookModel.findOne({ phoneNo });
-        }
+       
 
         
         if (!existingUser) {
@@ -107,8 +105,7 @@ export async function facebookLoginController(req, res) {
             const referralCode = generateUniqueReferralCode();
             const newUser = new facebookModel({  
                 referralCode, 
-                ...(phoneNo ? { phoneNo } : {}), 
-                ...(facebookID ? { facebookID } : {}) 
+                facebookID
             });
             
 
