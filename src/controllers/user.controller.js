@@ -156,6 +156,7 @@ export async function facebookLoginController(req, res) {
                   return res.send(error(404,"referred user not found"));
               }
               refferer.coins+=20;
+              refferer.referedCount++;
               refferer.isReferred = true;
               await refferer.save();
               reffered.coins+=10;
