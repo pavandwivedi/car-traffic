@@ -15,25 +15,24 @@ export async function guestLoginController(req, res) {
             return res.send(error(422, "insufficient data"));
         }
        
-        const  existingUser = await guestModel.findOne({ deviceID });
+        const existingUser = await guestModel.findOne({ deviceID });
        
-        if (!existingUser) {
-           
-            const referralCode = generateUniqueReferralCode();
-          
-            const newUser = await guestModel.create({deviceID,referralCode});
-            console.log(newUser);
-            const accessToken = generateAccessToken({ ...newUser })
-            return res.send(success(200,{accessToken, isNewUser: true}))
+        if (existingUser) {
+            // If the existing user is found, delete it
+            await guestModel.deleteOne({ deviceID });
         }
-  
-        const accessToken = generateAccessToken({ ...existingUser });
-        return res.send(success(200, {accessToken, isNewUser: false}));
+       
+        const referralCode = generateUniqueReferralCode();
+          
+        const newUser = await guestModel.create({ deviceID, referralCode });
+        console.log(newUser);
+        const accessToken = generateAccessToken({ ...newUser })
+        return res.send(success(200, { accessToken, isNewUser: true }));
+        
     } catch (err) {
-      
         return res.send(error(500, err.message));
     }
-  }
+}
   export async function authenticLoginController(req, res) {
     try {
         const { email, deviceID ,name} = req.body;
@@ -140,33 +139,49 @@ export async function facebookLoginController(req, res) {
         return res.send(error(500, err.message));
     }
 }
-    export async function referAndEarnController(req,res){
-  
-          const currUser = req._id;
-         
-          const{referralCode} = req.body;
-          try {
-              const refferer = await userModel.findOne({referralCode}); 
-              
-              if(!refferer){
-                  return res.send(error(404,"refferer user not found"));
-              } 
-              const reffered = await userModel.findById({_id:currUser});
-              if(!reffered){
-                  return res.send(error(404,"referred user not found"));
-              }
-              refferer.coins+=20;
-              refferer.referedCount++;
-              refferer.isReferred = true;
-              await refferer.save();
-              reffered.coins+=10;
-              await reffered.save();
-           return res.send(success(200,"you have earn 10 coins by referal successfully "));
-              
-          } catch (err) {
-              return res.send(error(500,err.message));
-          }
+export async function referAndEarnController(req, res) {
+    const currUser = req._id;
+    const { referralCode } = req.body;
+    try {
+        const referrer = await userModel.findOne({ referralCode });
+        if (!referrer) {
+            return res.send(error(404, "referrer user not found"));
+        }
+
+        const referred = await userModel.findById(currUser);
+
+        if (!referred) {
+            return res.send(error(404, "referred user not found"));
+        }
+
+        // Store the original referral code of both referrer and referred
+        const originalReferralCodeReferrer = referrer.referralCode;
+        const originalReferralCodeReferred = referred.referralCode;
+
+        // Perform the referral and earn operations
+        referrer.coins += 20;
+        // console.log(referrer);
+        referrer.referedCount++;
+        await referrer.save();
+
+        referred.coins += 10;
+        referred.isReferUsed = true;
+        await referred.save();
+        
+        // Restore the original referral codes
+        referrer.referralCode = originalReferralCodeReferrer;
+        referrer.isReferred = true;
+        await referrer.save();
+
+        referred.referralCode = originalReferralCodeReferred;
+        await referred.save();
+
+        return res.send(success(200, {isReferred:true}));
+
+    } catch (err) {
+        return res.send(error(500, err.message));
     }
+}
     export async function updateUserController (req,res){
         try {
             const userID = req._id;
