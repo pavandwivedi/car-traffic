@@ -16,4 +16,5 @@ userRouter.post('/decreaseVehiclePower',checkUserLogin,decreaseVehiclePowerContr
 userRouter.get("/unlockLevelCount",checkUserLogin,getUnlockLevels);
 userRouter.get('/updateUser',checkUserLogin,updateUserController);
 userRouter.put("/addMoves",checkUserLogin,addMovesController);
+userRouter.get('/getdetails',getdetailController);
 export default userRouter;    

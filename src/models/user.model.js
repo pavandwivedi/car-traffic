@@ -21,7 +21,7 @@ const commonSchema = mongoose.Schema({
     referedCount:{type:Number,default:0},
    coins:{
         type:Number,
-        default:0
+        default:0,
     },
     movecount:{
         type:Number,
@@ -80,6 +80,7 @@ const facebookSchema = new mongoose.Schema({
         unique:true
        
     },
+    
    
 })
 
