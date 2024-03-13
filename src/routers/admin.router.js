@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllUsers, loginAdminController, signupAdminController } from '../controllers/admin.controller.js';
+import { getAllUsers, loginAdminController, signupAdminController,createChallengeController,updateChallengeController,deleteChallengeController} from '../controllers/admin.controller.js';
 import { checkAdminLogin } from '../middlewares/admin.middleware.js';
 
 const adminRouter = express.Router();
@@ -7,6 +7,9 @@ const adminRouter = express.Router();
 adminRouter.post("/signup",signupAdminController);
 adminRouter.post("/login",loginAdminController);
 adminRouter.get("/getAllUsers",checkAdminLogin,getAllUsers);
-// ssh-keygen -t ed25519 -C "kuldeeppanwar460@gmail.com"
+adminRouter.post('/createChallenge',checkAdminLogin,createChallengeController);
+adminRouter.put('/updateChallenge/:id',checkAdminLogin,updateChallengeController);
+adminRouter.delete('/deleteChallenge/:id',checkAdminLogin,deleteChallengeController);
+
 
 export default adminRouter;
