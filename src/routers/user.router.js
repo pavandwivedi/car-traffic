@@ -1,5 +1,5 @@
 import express from 'express';
-import { addMovesController, authenticLoginController, decreaseCoinsController, decreaseVehiclePowerController, facebookLoginController, getUnlockLevels, getUserController, guestLoginController, referAndEarnController, updateCoinController, updateUserController, updateVehiclePowerController } from '../controllers/user.controller.js';
+import { addMovesController, authenticLoginController, decreaseCoinsController, decreaseVehiclePowerController, facebookLoginController, getUnlockLevels, getUserController, getdetailController, guestLoginController, referAndEarnController, updateCoinController, updateUserController, updateVehiclePowerController } from '../controllers/user.controller.js';
 import { checkUserLogin } from '../middlewares/user.middleware.js';
 
 const userRouter = express.Router();
