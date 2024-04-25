@@ -13,10 +13,6 @@ export async function insertChallengeController(req,res){
         if(!currUser){
             return res.send(error(404, 'User Not Found'))
         }
-        // const existingChallenge = await challengemodel.findOne({name})
-        // if(existingChallenge){
-        //     await challengemodel.deleteOne({name})
-        // }
 
         const activeChallenge = await challengemodel.findOne({user,status:"incomplete"})
         if(activeChallenge){
