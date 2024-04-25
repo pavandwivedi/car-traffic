@@ -5,6 +5,7 @@ import userRouter from './src/routers/user.router.js';
 import adminRouter from './src/routers/admin.router.js';
 import levelRouter from './src/routers/level.router.js';
 import achievementRouter from './src/routers/achievement.router.js';
+import challengeRouter from './src/routers/user.challenge.router.js';
 import { dbConfig } from './src/config/db.config.js';
 import cors from 'cors';
 import versionRouter from './src/routers/versionRouter.js';
@@ -20,7 +21,7 @@ app.use("/admin",adminRouter);
 app.use("/level",levelRouter);
 app.use("/achievement",achievementRouter);
 app.use("/version",versionRouter);
-
+app.use("/challenge",challengeRouter);
 
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
