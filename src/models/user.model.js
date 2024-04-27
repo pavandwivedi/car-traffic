@@ -8,7 +8,8 @@ const commonSchema = mongoose.Schema({
     },
     INR:{
         type:Number,
-        default:0
+        default:0,
+        min:0
     },
     isReferred:{
         type:Boolean,

@@ -26,12 +26,13 @@ export async function insertChallengeController(req,res){
     if (!challengeDetails.isActive){
         return res.send(error(404, 'Challenge is not active'))
     }
-    const now = new Date()
-    const utcOffset = 5.5 *60 * 60 * 1000;
-    const istTime = new Date(startTime.getTime() + utcOffset)
+    const now = new Date(); // Current UTC date
+    const utcOffset = 5.5 * 60 * 60 * 1000; // Indian Standard Time (IST) offset in milliseconds (UTC+5:30)
+    const istTime = new Date(now.getTime() + utcOffset); // Convert UTC to IST
 
-      const startTime = istTime;
-      const endTime = new Date(startTime.getTime() + challengeDetails.duration)
+    // Create startTime and endTime based on IST
+    const startTime = istTime;
+    const endTime = new Date(startTime.getTime() + challengeDetails.duration);
 
       const challengeInfo = new challengemodel 
       ({
@@ -64,7 +65,7 @@ export async function insertChallengeController(req,res){
 
       return res.send(success(200,"Challenge started successfully",response))
 }catch (error){
-    return res.send(error(500,error.message))
+    return res.send(500,error.message)
 }
 }
 
