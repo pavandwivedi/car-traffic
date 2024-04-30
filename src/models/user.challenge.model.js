@@ -23,10 +23,12 @@ const challengeSchema = mongoose.Schema({
         enum :['complete','incomplete'],
         default:'incomplete'
     },
+    rewards:{
+        type:Number
+    },
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
-     
     },
     taskamount:{
         type: Number,

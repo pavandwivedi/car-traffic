@@ -3,6 +3,7 @@ import challengemodel from "../models/user.challenge.model.js";
 import { userModel } from "../models/user.model.js";
 import { success,error } from "../utills/responseWrapper.utill.js";
 import CompletedChallenge from "../models/completedChallenge.js";
+import {generateUniqueReferenceId} from '../services/generateRefrenceID.js'
 
 export async function insertChallengeController(req,res){
     try{
@@ -40,6 +41,7 @@ export async function insertChallengeController(req,res){
         startTime: startTime,
         endTime,
         name,
+        rewards:challengeDetails.rewards,
         taskamount: challengeDetails.taskamount,
         duration: challengeDetails.duration,
         status: "incomplete",
@@ -57,6 +59,7 @@ export async function insertChallengeController(req,res){
         name: createdChallenge.name,
         startTime: createdChallenge.startTime,
         status: createdChallenge.status,
+        rewards: createdChallenge.rewards,
         user: createdChallenge.user,
         duration:createdChallenge.duration,
         taskamount:createdChallenge.taskamount,
@@ -68,6 +71,9 @@ export async function insertChallengeController(req,res){
     return res.send(500,error.message)
 }
 }
+
+
+
 
 export async function updateChallengeController(req,res){
     try{
@@ -138,6 +144,7 @@ export async function getAllChallengeController(req,res){
             startTime: challenge.startTime,
             remainingTime: challenge.remainingTime,
             status: challenge.status,
+            rewards:challenge.rewards,
             duration: challenge.duration,
             taskamount:challenge.taskamount,
             referenceId:challenge.referenceId
